@@ -1,0 +1,12 @@
+# Experiment A: COCO-pretrained YOLO trained on foreign data (RDD2022 + Rome)
+data: configs/data_foreign.yaml
+model: yolov8s.pt      # COCO-pretrained weights (downloaded by Ultralytics on first use)
+imgsz: 640
+epochs: 50
+batch: 16
+patience: 15
+seed: 0
+workers: 2
+project: runs
+name: baseline_a
+# device: 0            # set by --device; default lets Ultralytics pick the GPU if there is one

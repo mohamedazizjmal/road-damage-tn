@@ -50,7 +50,12 @@ def place_image(src: Path, dst: Path, mode: str = "copy") -> None:
     dst.parent.mkdir(parents=True, exist_ok=True)
     if dst.exists() or dst.is_symlink():
         dst.unlink()
-    if mode == "copy":
+    if mode == "auto":  # hardlink when possible (no extra disk, no admin rights), else copy
+        try:
+            os.link(src, dst)
+        except OSError:
+            shutil.copy2(src, dst)
+    elif mode == "copy":
         shutil.copy2(src, dst)
     elif mode == "symlink":
         os.symlink(src.resolve(), dst)

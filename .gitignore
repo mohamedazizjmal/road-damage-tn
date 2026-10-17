@@ -20,3 +20,5 @@ data/processed/*
 *.mp4
 *.mov
 *.gpx
+
+reports/preview_*/

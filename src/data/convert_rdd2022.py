@@ -80,10 +80,9 @@ def parse_voc_xml(path: Path) -> tuple[tuple[int, int] | None, list[VocObject]]:
 
 
 def find_country_dirs(root: Path) -> list[Path]:
-    base = root / "RDD2022" if (root / "RDD2022").is_dir() else root
-    return sorted(
-        d for d in base.iterdir() if d.is_dir() and (d / "train" / "annotations" / "xmls").is_dir()
-    )
+    """Folders that contain `train/annotations/xmls`, at any depth (handles Czech/Czech/train)."""
+    found = {x.parent.parent.parent for x in root.rglob("xmls") if x.parent.parent.name == "train"}
+    return sorted(found)
 
 
 def convert_rdd2022(root: Path, out_dir: Path, mode: str = "copy", limit: int | None = None):

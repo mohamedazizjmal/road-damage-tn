@@ -16,6 +16,6 @@ format:
 test:
 	pytest -q
 
-# Filled in at the training step (CPU smoke run on ~20 images)
+# CPU smoke run on ~20 synthetic images (needs: pip install -e ".[train]")
 smoke:
-	@echo "smoke test not implemented yet"
+	@$(PY) -m src.train.smoke

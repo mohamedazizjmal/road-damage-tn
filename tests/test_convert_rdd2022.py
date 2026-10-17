@@ -82,3 +82,17 @@ def test_limit_per_country(tmp_path: Path) -> None:
         _make(root, "Czech", stem, 20, 20, [("D40", 1, 1, 5, 5)])
     rows, _, _ = convert_rdd2022(root, out, limit=2)
     assert len(rows) == 2
+
+
+def test_nested_country_layout(tmp_path: Path) -> None:
+    """Real downloads look like <root>/Czech/Czech/train/... (country folder repeated)."""
+    root, out = tmp_path / "raw", tmp_path / "out"
+    train = root / "Czech" / "Czech" / "train"
+    (train / "images").mkdir(parents=True)
+    (train / "annotations" / "xmls").mkdir(parents=True)
+    cv2.imwrite(str(train / "images" / "z.jpg"), np.zeros((20, 20, 3), dtype=np.uint8))
+    obj = OBJ.format(n="D40", a=1, b=1, c=5, d=5)
+    (train / "annotations" / "xmls" / "z.xml").write_text(XML.format(w=20, h=20, objects=obj))
+    rows, _, _ = convert_rdd2022(root, out)
+    assert [r["image_id"] for r in rows] == ["Czech_z"]
+    assert rows[0]["country"] == "Czech"

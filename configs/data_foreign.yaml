@@ -1,0 +1,10 @@
+# Foreign data (RDD2022 + Rome), produced by src/data/make_splits.py
+# `path` is relative to the repo root here; src/train/train.py turns it into an absolute path
+# (or uses --data-root, e.g. on Kaggle) because Ultralytics resolves relative paths against its own
+# datasets folder, not your current folder.
+path: data/processed/yolo_foreign
+train: images/train
+val: images/val
+names:
+  0: pothole
+  1: crack
