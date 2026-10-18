@@ -52,6 +52,8 @@ def train(cfg: dict, data_yaml: Path):
 
     model = YOLO(cfg["model"])
     kwargs = {k: cfg[k] for k in TRAIN_KEYS if k in cfg}
+    if "project" in kwargs:  # absolute path, otherwise Ultralytics nests it under runs/detect/
+        kwargs["project"] = str(Path(kwargs["project"]).resolve())
     return model.train(data=str(data_yaml), **kwargs)
 
 
